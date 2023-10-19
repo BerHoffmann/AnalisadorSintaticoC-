@@ -1,0 +1,151 @@
+
+C- COMPILATION: ../example/mdc.cm
+
+Start parse():
+1: /* Um programa para calcular mdc 
+2:    Segundo o algoritmo de Euclides*/
+3: int gdc (int u, int v)
+	3: reserved word: int
+	3: ID, name= gdc
+	3: (
+	3: reserved word: int
+	3: ID, name= u
+	3: ,
+	3: reserved word: int
+	3: ID, name= v
+	3: )
+4: {
+	4: {
+5:     if (v == 0) return u;
+	5: reserved word: if
+	5: (
+	5: ID, name= v
+	5: ==
+	5: NUM, val= 0
+	5: )
+	5: reserved word: return
+	5: ID, name= u
+	5: ;
+6:     else return gdc(v,u-u/v*v);
+	6: reserved word: else
+	6: reserved word: return
+	6: ID, name= gdc
+	6: (
+	6: ID, name= v
+	6: ,
+	6: ID, name= u
+	6: -
+	6: ID, name= u
+	6: /
+	6: ID, name= v
+	6: *
+	6: ID, name= v
+	6: )
+	6: ;
+7:     /* u-u / v*v == u mod v */
+8: }
+	8: }
+9: void main(void)
+	9: reserved word: void
+	9: ID, name= main
+	9: (
+	9: reserved word: void
+	9: )
+10: {
+	10: {
+11:     int x;
+	11: reserved word: int
+	11: ID, name= x
+	11: ;
+12:     int y;
+	12: reserved word: int
+	12: ID, name= y
+	12: ;
+13:     x = input();
+	13: ID, name= x
+	13: =
+	13: ID, name= input
+	13: (
+	13: )
+	13: ;
+14:     y = input();
+	14: ID, name= y
+	14: =
+	14: ID, name= input
+	14: (
+	14: )
+	14: ;
+15:     output(gdc(x,y));
+	15: ID, name= output
+	15: (
+	15: ID, name= gdc
+	15: (
+	15: ID, name= x
+	15: ,
+	15: ID, name= y
+	15: )
+	15: )
+	15: ;
+16: }	16: }
+	16: EOF
+
+Syntax tree:
+  Type: int
+    Id: gdc
+      Type: int
+        Id: u
+      Type: int
+        Id: v
+      If
+        Op: ==
+          Id: v
+          Const: 0
+        Return
+          Id: u
+        Return
+          Activation: gdc
+            Id: v
+            Op: -
+              Id: u
+              Op: *
+                Op: /
+                  Id: u
+                  Id: v
+                Id: v
+  Type: void
+    Id: main
+      Type: int
+        Id: x
+      Type: int
+        Id: y
+      Assign:
+        Id: x
+        Activation: input
+      Assign:
+        Id: y
+        Activation: input
+      Activation: output
+        Activation: gdc
+          Id: x
+          Id: y
+
+Building Symbol Table...
+
+Symbol table:
+
+Variable Name  Scope     ID Type  Data Type  Line Numbers             
+-------------  --------  -------  ---------  -------------------------
+gdc                      fun      int         3  6 15 
+main                     fun      void        9 
+input                    fun      int        13 14 
+u              gdc       var      int         3  5  6 
+output                   fun      void       15 
+v              gdc       var      int         3  5  6 
+x              main      var      int        11 13 15 
+y              main      var      int        12 14 15 
+
+Checking for main...
+
+Checking types...
+
+Semantic analysis finished

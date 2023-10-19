@@ -1,0 +1,9 @@
+for f in ../example/*.cm  
+do 
+    OUTFILE=../alunoout/`basename -s .cm $f`.out
+    echo "running mylex on $f" 
+    ../build/mylex $f ../alunodetail/ > ${OUTFILE}
+done
+
+echo GENERATED OUTPUTS
+wc ../alunoout/*.out  

@@ -1,0 +1,4 @@
+  Type: void
+    Id: main
+      Type: void
+        Id: a

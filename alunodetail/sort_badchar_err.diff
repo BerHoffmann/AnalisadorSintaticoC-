@@ -1,0 +1,11 @@
+1a2
+> ERROR: â
+3c4,7
+< Current token: ERROR: â
+---
+> Syntax error at line 22: syntax error
+> Current token: Current token: ERROR: â
+> ERROR: â
+> ERROR: €
+4a9
+> ERROR: “

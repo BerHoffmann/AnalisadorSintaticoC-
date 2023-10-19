@@ -1,0 +1,148 @@
+
+C- COMPILATION: ../example/function_call_test_code.cm
+
+Start parse():
+1: int f(int a, int b) {
+	1: reserved word: int
+	1: ID, name= f
+	1: (
+	1: reserved word: int
+	1: ID, name= a
+	1: ,
+	1: reserved word: int
+	1: ID, name= b
+	1: )
+	1: {
+2:     return a + b;
+	2: reserved word: return
+	2: ID, name= a
+	2: +
+	2: ID, name= b
+	2: ;
+3: }
+	3: }
+4: 
+5: int g(int x) {
+	5: reserved word: int
+	5: ID, name= g
+	5: (
+	5: reserved word: int
+	5: ID, name= x
+	5: )
+	5: {
+6:     return x + 1;
+	6: reserved word: return
+	6: ID, name= x
+	6: +
+	6: NUM, val= 1
+	6: ;
+7: }
+	7: }
+8: 
+9: void main (void) {
+	9: reserved word: void
+	9: ID, name= main
+	9: (
+	9: reserved word: void
+	9: )
+	9: {
+10:     int a; int b; int x;
+	10: reserved word: int
+	10: ID, name= a
+	10: ;
+	10: reserved word: int
+	10: ID, name= b
+	10: ;
+	10: reserved word: int
+	10: ID, name= x
+	10: ;
+11:     x = f(a, g(b));
+	11: ID, name= x
+	11: =
+	11: ID, name= f
+	11: (
+	11: ID, name= a
+	11: ,
+	11: ID, name= g
+	11: (
+	11: ID, name= b
+	11: )
+	11: )
+	11: ;
+12: }	12: }
+	12: EOF
+
+Syntax tree:
+  Type: int
+    Id: f
+      Type: int
+        Id: a
+      Type: int
+        Id: b
+      Return
+        Op: +
+          Id: a
+          Id: b
+  Type: int
+    Id: g
+      Type: int
+        Id: x
+      Return
+        Op: +
+          Id: x
+          Const: 1
+  Type: void
+    Id: main
+      Type: int
+        Id: a
+      Type: int
+        Id: b
+      Type: int
+        Id: x
+      Assign:
+        Id: x
+        Activation: f
+          Id: a
+          Activation: g
+            Id: b
+
+Building Symbol Table...
+
+Symbol table:
+
+Variable Name  Scope     ID Type  Data Type  Line Numbers             
+-------------  --------  -------  ---------  -------------------------
+main                     fun      void        9 
+input                    fun      int        
+a              main      var      int        10 11 
+a              f         var      int         1  2 
+b              main      var      int        10 11 
+b              f         var      int         1  2 
+f                        fun      int         1 11 
+g                        fun      int         5 11 
+output                   fun      void       
+x              main      var      int        10 11 
+x              g         var      int         5  6 
+
+Checking for main...
+
+Checking types...
+
+Semantic analysis finished
+* C- Compilation to 3 Address Intermediate Code
+
+         f:
+          t1 = a + b
+          return t1
+         g:
+          t2 = x + 1
+          return t2
+      main:
+          param a
+          param b
+          t3 = call g, 1
+          param t3
+          t4 = call f, 2
+          x = t4
+          halt
+* End of execution.

@@ -1,0 +1,74 @@
+
+C- COMPILATION: ../example/ser2_invalid_void_assignment.cm
+
+Start parse():
+1: void exemplo(void)
+	1: reserved word: void
+	1: ID, name= exemplo
+	1: (
+	1: reserved word: void
+	1: )
+2: { 
+	2: {
+3:     output(3);  
+	3: ID, name= output
+	3: (
+	3: NUM, val= 3
+	3: )
+	3: ;
+4: }
+	4: }
+5: 
+6: void main(void)
+	6: reserved word: void
+	6: ID, name= main
+	6: (
+	6: reserved word: void
+	6: )
+7: {
+	7: {
+8:     int a;
+	8: reserved word: int
+	8: ID, name= a
+	8: ;
+9:     a = exemplo();
+	9: ID, name= a
+	9: =
+	9: ID, name= exemplo
+	9: (
+	9: )
+	9: ;
+10: }	10: }
+	10: EOF
+
+Syntax tree:
+  Type: void
+    Id: exemplo
+      Activation: output
+        Const: 3
+  Type: void
+    Id: main
+      Type: int
+        Id: a
+      Assign:
+        Id: a
+        Activation: exemplo
+
+Building Symbol Table...
+
+Symbol table:
+
+Variable Name  Scope     ID Type  Data Type  Line Numbers             
+-------------  --------  -------  ---------  -------------------------
+main                     fun      void        6 
+input                    fun      int        
+a              main      var      int         8  9 
+exemplo                  fun      void        1  9 
+output                   fun      void        3 
+
+Checking for main...
+
+Checking types...
+Semantic error at line 9: invalid use of void expression
+
+Semantic analysis finished

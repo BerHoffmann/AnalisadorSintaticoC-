@@ -1,0 +1,12 @@
+  Type: int
+    Id: funOne
+      Activation: output
+        Const: 1
+  Type: int
+    Id: funTwo
+      Activation: output
+        Const: 2
+  Type: int
+    Id: funThree
+      Activation: output
+        Const: 3

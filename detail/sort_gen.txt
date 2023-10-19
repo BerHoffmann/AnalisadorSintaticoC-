@@ -1,0 +1,76 @@
+* C- Compilation to 3 Address Intermediate Code
+
+    minloc:
+          k = low
+          t1 = low * 4
+          x = a[t1]
+          t2 = low + 1
+          i = t2
+        L1:
+          t3 = i < high
+          if_false t3 goto L2
+          t4 = i * 4
+          t5 = a[t4] < x
+          if_true t5 goto L3
+          goto L4
+        L3:
+          t6 = i * 4
+          x = a[t6]
+          k = i
+        L4:
+          t7 = i + 1
+          i = t7
+          goto L1
+        L2:
+          return k
+      sort:
+          i = low
+        L5:
+          t8 = high - 1
+          t9 = i < t8
+          if_false t9 goto L6
+          param a
+          param i
+          param high
+          t10 = call minloc, 3
+          k = t10
+          t11 = k * 4
+          t = a[t11]
+          t12 = k * 4
+          t13 = i * 4
+          a[t12] = a[t13]
+          t14 = i * 4
+          a[t14] = t
+          t15 = i + 1
+          i = t15
+          goto L5
+        L6:
+      main:
+          i = 0
+        L7:
+          t16 = i < 10
+          if_false t16 goto L8
+          t17 = i * 4
+          t18 = call input, 0
+          x[t17] = t18
+          t19 = i + 1
+          i = t19
+          goto L7
+        L8:
+          param x
+          param 0
+          param 10
+          t20 = call sort, 3
+          i = 0
+        L9:
+          t21 = i < 10
+          if_false t21 goto L10
+          t22 = i * 4
+          param x[t22]
+          t23 = call output, 1
+          t24 = i + 1
+          i = t24
+          goto L9
+       L10:
+          halt
+* End of execution.

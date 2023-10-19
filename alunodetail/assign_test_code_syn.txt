@@ -1,0 +1,31 @@
+  Type: void
+    Id: funOne
+      Type: int
+        Id: a
+      Type: int
+        Id: b
+      Assign:
+        Id: b
+        Op: +
+          Const: 1
+          Op: /
+            Op: *
+              Const: 5
+              Const: 7
+            Const: 2
+      Assign:
+        Id: a
+        Op: +
+          Id: b
+          Const: 4
+  Type: void
+    Id: main
+      Type: int
+        Id: x
+      Type: int
+        Id: y
+      Assign:
+        Id: y
+        Op: +
+          Id: x
+          Const: 1

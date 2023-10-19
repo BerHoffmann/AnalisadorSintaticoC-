@@ -1,0 +1,38 @@
+  Type: int
+    Id: gdc
+      Type: int
+        Id: u
+      Type: int
+        Id: v
+      If
+        Op: ==
+          Id: v
+          Const: 0
+        Return
+          Id: u
+        Return
+          Activation: gdc
+            Id: v
+            Op: -
+              Id: u
+              Op: *
+                Op: /
+                  Id: u
+                  Id: v
+                Id: v
+  Type: void
+    Id: main
+      Type: int
+        Id: x
+      Type: int
+        Id: y
+      Assign:
+        Id: x
+        Activation: input
+      Assign:
+        Id: y
+        Activation: input
+      Activation: output
+        Activation: gdc
+          Id: x
+          Id: y

@@ -1,0 +1,10 @@
+  Type: void
+    Id: exemplo
+      Type: int
+        Id: a
+      Assign:
+        Id: a
+        Const: 0
+      Assign:
+        Id: b
+        Id: a

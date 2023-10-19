@@ -1,0 +1,11 @@
+  Type: void
+    Id: exemplo
+      Activation: output
+        Const: 3
+  Type: void
+    Id: main
+      Type: int
+        Id: a
+      Assign:
+        Id: a
+        Activation: exemplo

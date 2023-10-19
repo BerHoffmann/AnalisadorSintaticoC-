@@ -1,0 +1,76 @@
+  Type: void
+    Id: main
+      Type: int
+        Id: x
+      Type: int
+        Id: a
+      Type: int
+        Id: b
+      Type: int
+        Id: i
+      If
+        Op: ==
+          Id: a
+          Id: b
+        Assign:
+          Id: x
+          Const: 0
+        Assign:
+          Id: x
+          Const: 1
+      If
+        Op: <
+          Id: a
+          Id: b
+        Assign:
+          Id: a
+          Op: +
+            Id: b
+            Const: 1
+        Assign:
+          Id: b
+          Op: +
+            Id: b
+            Op: /
+              Op: *
+                Const: 3
+                Const: 5
+              Const: 2
+      If
+        Op: >
+          Id: a
+          Id: b
+        Assign:
+          Id: a
+          Const: 8
+        Assign:
+          Id: b
+          Const: 75
+        Assign:
+          Id: a
+          Op: +
+            Op: *
+              Id: b
+              Op: /
+                Const: 5
+                Const: 3
+            Const: 7
+      While
+        Op: <=
+          Id: i
+          Const: 10
+        Assign:
+          Id: b
+          Op: *
+            Id: i
+            Const: 2
+        Assign:
+          Id: a
+          Op: +
+            Id: b
+            Const: 4
+        Assign:
+          Id: i
+          Op: +
+            Id: i
+            Const: 1

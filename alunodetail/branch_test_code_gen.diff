@@ -1,0 +1,46 @@
+0a1,45
+> * C- Compilation to 3 Address Intermediate Code
+> 
+>       main:
+>           t1 = a == b
+>           if_true t1 goto L1
+>           x = 1
+>           goto L2
+>         L1:
+>           x = 0
+>         L2:
+>           t2 = a < b
+>           if_true t2 goto L3
+>           goto L4
+>         L3:
+>           t3 = b + 1
+>           a = t3
+>           t4 = 3 * 5
+>           t5 = t4 / 2
+>           t6 = b + t5
+>           b = t6
+>         L4:
+>           t7 = a > b
+>           if_true t7 goto L5
+>           b = 75
+>           t8 = 5 / 3
+>           t9 = b * t8
+>           t10 = t9 + 7
+>           a = t10
+>           goto L6
+>         L5:
+>           a = 8
+>         L6:
+>         L7:
+>           t11 = i <= 10
+>           if_false t11 goto L8
+>           t12 = i * 2
+>           b = t12
+>           t13 = b + 4
+>           a = t13
+>           t14 = i + 1
+>           i = t14
+>           goto L7
+>         L8:
+>           halt
+> * End of execution.

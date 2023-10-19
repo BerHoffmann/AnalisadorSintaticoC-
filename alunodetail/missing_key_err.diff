@@ -1,0 +1,10 @@
+2,3c2,5
+< Current token: Syntax error at line 17: syntax error
+< Current token: 
+\ No newline at end of file
+---
+> Syntax error at line 8: syntax error
+> Current token: Current token: Syntax error at line 17: syntax error
+> Syntax error at line 17: syntax error
+> Current token: Current token: 
+\ No newline at end of file

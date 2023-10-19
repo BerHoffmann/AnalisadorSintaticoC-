@@ -1,0 +1,14 @@
+* C- Compilation to 3 Address Intermediate Code
+
+    funOne:
+          t1 = 5 * 7
+          t2 = t1 / 2
+          t3 = 1 + t2
+          b = t3
+          t4 = b + 4
+          a = t4
+      main:
+          t5 = x + 1
+          y = t5
+          halt
+* End of execution.

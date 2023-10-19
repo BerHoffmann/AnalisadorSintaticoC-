@@ -1,0 +1,243 @@
+
+C- COMPILATION: ../example/branch_test_code.cm
+
+Start parse():
+1: void main (void) {
+	1: reserved word: void
+	1: ID, name= main
+	1: (
+	1: reserved word: void
+	1: )
+	1: {
+2:    int x; int a; int b; int i;
+	2: reserved word: int
+	2: ID, name= x
+	2: ;
+	2: reserved word: int
+	2: ID, name= a
+	2: ;
+	2: reserved word: int
+	2: ID, name= b
+	2: ;
+	2: reserved word: int
+	2: ID, name= i
+	2: ;
+3:    if (a == b) x = 0;
+	3: reserved word: if
+	3: (
+	3: ID, name= a
+	3: ==
+	3: ID, name= b
+	3: )
+	3: ID, name= x
+	3: =
+	3: NUM, val= 0
+	3: ;
+4:    else x = 1;
+	4: reserved word: else
+	4: ID, name= x
+	4: =
+	4: NUM, val= 1
+	4: ;
+5: 
+6:    if (a < b) {
+	6: reserved word: if
+	6: (
+	6: ID, name= a
+	6: <
+	6: ID, name= b
+	6: )
+	6: {
+7:       a = b + 1;
+	7: ID, name= a
+	7: =
+	7: ID, name= b
+	7: +
+	7: NUM, val= 1
+	7: ;
+8:       b = b + (3 * 5) / 2;
+	8: ID, name= b
+	8: =
+	8: ID, name= b
+	8: +
+	8: (
+	8: NUM, val= 3
+	8: *
+	8: NUM, val= 5
+	8: )
+	8: /
+	8: NUM, val= 2
+	8: ;
+9:    }
+	9: }
+10: 
+11:    if (a > b) {
+	11: reserved word: if
+	11: (
+	11: ID, name= a
+	11: >
+	11: ID, name= b
+	11: )
+	11: {
+12:       a = 8;
+	12: ID, name= a
+	12: =
+	12: NUM, val= 8
+	12: ;
+13:    } else {
+	13: }
+	13: reserved word: else
+	13: {
+14:       b = 75;
+	14: ID, name= b
+	14: =
+	14: NUM, val= 75
+	14: ;
+15:       a = b * (5 / 3) + 7;
+	15: ID, name= a
+	15: =
+	15: ID, name= b
+	15: *
+	15: (
+	15: NUM, val= 5
+	15: /
+	15: NUM, val= 3
+	15: )
+	15: +
+	15: NUM, val= 7
+	15: ;
+16:    }
+	16: }
+17: 
+18:    while (i <= 10)
+	18: reserved word: while
+	18: (
+	18: ID, name= i
+	18: <=
+	18: NUM, val= 10
+	18: )
+19:    {
+	19: {
+20:       b = i * 2;
+	20: ID, name= b
+	20: =
+	20: ID, name= i
+	20: *
+	20: NUM, val= 2
+	20: ;
+21:       a = b + 4;
+	21: ID, name= a
+	21: =
+	21: ID, name= b
+	21: +
+	21: NUM, val= 4
+	21: ;
+22:       i = i + 1;
+	22: ID, name= i
+	22: =
+	22: ID, name= i
+	22: +
+	22: NUM, val= 1
+	22: ;
+23:    }
+	23: }
+24: }	24: }
+	24: EOF
+
+Syntax tree:
+  Type: void
+    Id: main
+      Type: int
+        Id: x
+      Type: int
+        Id: a
+      Type: int
+        Id: b
+      Type: int
+        Id: i
+      If
+        Op: ==
+          Id: a
+          Id: b
+        Assign:
+          Id: x
+          Const: 0
+        Assign:
+          Id: x
+          Const: 1
+      If
+        Op: <
+          Id: a
+          Id: b
+        Assign:
+          Id: a
+          Op: +
+            Id: b
+            Const: 1
+        Assign:
+          Id: b
+          Op: +
+            Id: b
+            Op: /
+              Op: *
+                Const: 3
+                Const: 5
+              Const: 2
+      If
+        Op: >
+          Id: a
+          Id: b
+        Assign:
+          Id: a
+          Const: 8
+        Assign:
+          Id: b
+          Const: 75
+        Assign:
+          Id: a
+          Op: +
+            Op: *
+              Id: b
+              Op: /
+                Const: 5
+                Const: 3
+            Const: 7
+      While
+        Op: <=
+          Id: i
+          Const: 10
+        Assign:
+          Id: b
+          Op: *
+            Id: i
+            Const: 2
+        Assign:
+          Id: a
+          Op: +
+            Id: b
+            Const: 4
+        Assign:
+          Id: i
+          Op: +
+            Id: i
+            Const: 1
+
+Building Symbol Table...
+
+Symbol table:
+
+Variable Name  Scope     ID Type  Data Type  Line Numbers             
+-------------  --------  -------  ---------  -------------------------
+main                     fun      void        1 
+input                    fun      int        
+a              main      var      int         2  3  6  7 11 12 15 21 
+b              main      var      int         2  3  6  7  8 11 14 15 20 21 
+i              main      var      int         2 18 20 22 
+output                   fun      void       
+x              main      var      int         2  3  4 
+
+Checking for main...
+
+Checking types...
+
+Semantic analysis finished

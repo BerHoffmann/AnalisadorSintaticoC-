@@ -1,0 +1,138 @@
+  Type: int
+    Id: x
+      Const: 10
+    Type: int
+      Id: minloc
+        Type: int
+          Id: a
+        Type: int
+          Id: low
+        Type: int
+          Id: high
+        Type: int
+          Id: i
+        Type: int
+          Id: x
+        Type: int
+          Id: k
+        Assign:
+          Id: k
+          Id: low
+        Assign:
+          Id: x
+          Id: a
+            Id: low
+        Assign:
+          Id: i
+          Op: +
+            Id: low
+            Const: 1
+        While
+          Op: <
+            Id: i
+            Id: high
+          If
+            Op: <
+              Id: a
+                Id: i
+              Id: x
+            Assign:
+              Id: x
+              Id: a
+                Id: i
+            Assign:
+              Id: k
+              Id: i
+          Assign:
+            Id: i
+            Op: +
+              Id: i
+              Const: 1
+        Return
+          Id: k
+    Type: void
+      Id: sort
+        Type: int
+          Id: a
+        Type: int
+          Id: low
+        Type: int
+          Id: high
+        Type: int
+          Id: i
+        Type: int
+          Id: k
+        Assign:
+          Id: i
+          Id: low
+        While
+          Op: <
+            Id: i
+            Op: -
+              Id: high
+              Const: 1
+          Type: int
+            Id: t
+          Assign:
+            Id: k
+            Activation: minloc
+              Id: a
+              Id: i
+              Id: high
+          Assign:
+            Id: t
+            Id: a
+              Id: k
+          Assign:
+            Id: a
+              Id: k
+            Id: a
+              Id: i
+          Assign:
+            Id: a
+              Id: i
+            Id: t
+          Assign:
+            Id: i
+            Op: +
+              Id: i
+              Const: 1
+    Type: void
+      Id: main
+        Type: int
+          Id: i
+        Assign:
+          Id: i
+          Const: 0
+        While
+          Op: <
+            Id: i
+            Const: 10
+          Assign:
+            Id: x
+              Id: i
+            Activation: input
+          Assign:
+            Id: i
+            Op: +
+              Id: i
+              Const: 1
+        Activation: sort
+          Id: x
+          Const: 0
+          Const: 10
+        Assign:
+          Id: i
+          Const: 0
+        While
+          Op: <
+            Id: i
+            Const: 10
+          Activation: output
+            Id: x
+              Id: i
+          Assign:
+            Id: i
+            Op: +
+              Id: i
+              Const: 1

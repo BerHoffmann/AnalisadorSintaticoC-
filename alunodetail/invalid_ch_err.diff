@@ -1,0 +1,8 @@
+1a2
+> ERROR: @
+3c4,6
+< Current token: ERROR: @
+---
+> Syntax error at line 5: syntax error
+> Current token: Current token: ERROR: @
+> ERROR: @

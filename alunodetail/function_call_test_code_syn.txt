@@ -1,0 +1,32 @@
+  Type: int
+    Id: f
+      Type: int
+        Id: a
+      Type: int
+        Id: b
+      Return
+        Op: +
+          Id: a
+          Id: b
+  Type: int
+    Id: g
+      Type: int
+        Id: x
+      Return
+        Op: +
+          Id: x
+          Const: 1
+  Type: void
+    Id: main
+      Type: int
+        Id: a
+      Type: int
+        Id: b
+      Type: int
+        Id: x
+      Assign:
+        Id: x
+        Activation: f
+          Id: a
+          Activation: g
+            Id: b

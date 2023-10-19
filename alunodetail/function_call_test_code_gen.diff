@@ -1,0 +1,18 @@
+0a1,17
+> * C- Compilation to 3 Address Intermediate Code
+> 
+>          f:
+>           t1 = a + b
+>           return t1
+>          g:
+>           t2 = x + 1
+>           return t2
+>       main:
+>           param a
+>           param b
+>           t3 = call g, 1
+>           param t3
+>           t4 = call f, 2
+>           x = t4
+>           halt
+> * End of execution.

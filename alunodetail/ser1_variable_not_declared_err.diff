@@ -1,0 +1,3 @@
+1a2,3
+> Semantic error at line 4: 'b' was not declared in this scope
+> Semantic error: undefined reference to 'main'

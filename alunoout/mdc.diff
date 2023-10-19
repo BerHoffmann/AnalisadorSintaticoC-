@@ -1,0 +1,29 @@
+151a152,179
+> * C- Compilation to 3 Address Intermediate Code
+> 
+>        gdc:
+>           t1 = v == 0
+>           if_true t1 goto L1
+>           param v
+>           t2 = u / v
+>           t3 = t2 * v
+>           t4 = u - t3
+>           param t4
+>           t5 = call gdc, 2
+>           return t5
+>           goto L2
+>         L1:
+>           return u
+>         L2:
+>       main:
+>           t6 = call input, 0
+>           x = t6
+>           t7 = call input, 0
+>           y = t7
+>           param x
+>           param y
+>           t8 = call gdc, 2
+>           param t8
+>           t9 = call output, 1
+>           halt
+> * End of execution.

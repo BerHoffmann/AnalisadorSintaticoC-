@@ -1,0 +1,10 @@
+
+Symbol table:
+
+Variable Name  Scope     ID Type  Data Type  Line Numbers             
+-------------  --------  -------  ---------  -------------------------
+main                     fun      void        1 
+input                    fun      int        
+a              main      var      void        3 
+output                   fun      void       
+Semantic error at line 3: variable declared void
