@@ -56,21 +56,20 @@ num         : NUM
                 { savedNumber = atoi(tokenString);
                   savedLineNo = lineno;
                 }
+            ;
 var-decl    : type-specifier id SEMI 
                 { $$ = newDeclNode(VarK);
                   $$->attr.type = $1;
-                  $$->lineno = lineno;
+                  $$->lineno = savedLineNoo;
                   $$->child[0] = newExpNode(IdK);
-                  $$->child[0]->lineno = lineno;
                   $$->child[0]->attr.name = savedName;
                 }
             | type-specifier id LCOL num RCOL SEMI
                 { $$ = newDeclNode(ArrVarK);
                   $$->attr.type = $1;
-                  $$->lineno = lineno;
+                  $$->lineno = savedLineNoo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.arr = newArrAttr(savedName, savedNumber);
-                  $$->child[0]->lineno = lineno;
                 }
             ;
 type-specifier  : INT  { $$ = $1; }
@@ -79,10 +78,9 @@ type-specifier  : INT  { $$ = $1; }
 fun-decl    : type-specifier id LPAREN params RPAREN composed-decl
                 { $$ = newDeclNode(FunK);
                   $$->attr.type = $1;
-                  $$->lineno = lineno;
+                  $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.name = savedName;
-                  $$->child[0]->lineno = lineno;
                   if (params == NULL)
                     $$->child[0]->child[0] = $6;
                   else {
@@ -109,18 +107,16 @@ param-list  : param-list COMMA param
 param       : type-specifier id 
                 { $$ = newDeclNode(ParamK);
                   $$->attr.type = $1;
-                  $$->lineno = lineno;
+                  $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.name = savedName;
-                  $$->child[0]->lineno = lineno;
                 }
             | type-specifier id LCOL RCOL
                 { $$ = newDeclNode(ArrParamK);
                   $$->attr.type = $1;
-                  $$->lineno = lineno;
+                  $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.name = savedName;
-                  $$->child[0]->lineno = lineno;
                 }
             ;
 composed-decl : LBRACK local-decls stmt-list LBRACK
@@ -207,7 +203,7 @@ var         : id
                 $$->attr.name = savedName;
               }
             | id LCOL exp RCOL
-              { $$ = newExpNode(IdK);
+              { $$ = newExpNode(ArrIdK);
                 $$->attr.name = savedName;
                 $$->child[0] = $3;
               }
