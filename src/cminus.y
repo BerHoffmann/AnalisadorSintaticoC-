@@ -246,14 +246,11 @@ mult        : TIMES { $$ = $1; }
             | OVER  { $$ = $1; }
             ;
 factor      : LPAREN exp RPAREN  { $$ = $2; }
-            | var
-                { $$ = newExpNode(IdK);
-                  $$->attr.val = atoi(tokenString);
-                }
-            | act 
-            | NUM
+            | var { $$ = $1; }
+            | act { $$ = $1; }
+            | num
                 { $$ = newExpNode(ConstK);
-                  $$->attr.val = atoi(tokenString);
+                  $$->attr.val = savedNumber;
                 }
             ;
 act         : id LPAREN args RPAREN
