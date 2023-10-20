@@ -71,7 +71,7 @@ int main( int argc, char * argv[] )
     listing = stdout; /* send listing to screen */
     initializePrinter(detailpath, pgm, LOGALL);
     
-  fprintf(listing,"\nTINY COMPILATION: %s\n",pgm);
+  fprintf(listing,"\nCMINUS COMPILATION: %s\n",pgm);
 #if NO_PARSE
   while (getToken()!=ENDFILE);
 #else

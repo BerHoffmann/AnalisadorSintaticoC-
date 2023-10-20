@@ -18,12 +18,15 @@ void printToken(TokenType token, const char *tokenString)
   {
   case IF:
   case ELSE:
-  case INT:
   case WHILE:
   case RETURN:
-  case VOID:
     fprintf(listing,
             "reserved word: %s\n", tokenString);
+  case VOID:
+    fprintf(listing, "void\n");
+    break;
+  case INT:
+    fprintf(listing, "int\n");
     break;
   case PLUS:
     fprintf(listing, "+\n");
@@ -157,8 +160,9 @@ TreeNode *newDeclNode(DeclKind kind)
       t->child[i] = NULL;
     t->sibling = NULL;
     t->nodekind = DeclK;
-    t->kind.stmt = kind;
+    t->kind.decl = kind;
     t->lineno = lineno;
+    t->type = Void;
   }
   return t;
 }
@@ -258,7 +262,7 @@ void printTree(TreeNode *tree)
         fprintf(listing, "Id: %s\n", tree->attr.name);
         break;
       case CallK:
-        fprintf(listing, "Call: %s\n", tree->attr.name);
+        fprintf(listing, "Activation: %s\n", tree->attr.name);
         break;
       default:
         fprintf(listing, "Unknown ExpNode kind\n");
@@ -267,26 +271,14 @@ void printTree(TreeNode *tree)
     }
     else if (tree->nodekind == DeclK)
     {
-      switch (tree->kind.exp)
+      switch (tree->kind.decl)
       {
-      case VarK:
-        fprintf(listing, "Var: ");
-        printToken(tree->attr.type, "\0");
-        break;
-      case FunK:
-        fprintf(listing, "Func: ");
-        printToken(tree->attr.type, "\0");
-        break;
-      case ArrVarK:
-        fprintf(listing, "ArrVar: ");
-        printToken(tree->attr.type, "\0");
-        break;
-      case ArrParamK:
-        fprintf(listing, "ArrParam: ");
-        printToken(tree->attr.type, "\0");
-        break;
-      case ParamK:
-        fprintf(listing, "Param: ");
+      case VarK :
+      case FunK :
+      case ArrVarK :
+      case ArrParamK :
+      case ParamK :
+        fprintf(listing, "Type: ");
         printToken(tree->attr.type, "\0");
         break;
       default:

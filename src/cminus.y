@@ -75,14 +75,17 @@ var-decl    : type-specifier id SEMI
 type-specifier  : INT  { $$ = INT; }
                 | VOID { $$ = VOID; }
                 ;
-fun-decl    : type-specifier id LPAREN params RPAREN composed-decl
+fun-decl    : type-specifier id 
                 { $$ = newDeclNode(FunK);
                   $$->attr.type = $1;
                   $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.name = savedName;
-                  $$->child[0]->child[0] = $4;
-                  $$->child[0]->child[1] = $6;
+                }
+              LPAREN params RPAREN composed-decl
+                { $$ = $3;
+                  $$->child[0]->child[0] = $5;
+                  $$->child[0]->child[1] = $7;
                 }
             ;
 params      : param-list  { $$ = $1; }
@@ -115,7 +118,7 @@ param       : type-specifier id
                   $$->child[0]->attr.name = savedName;
                 }
             ;
-composed-decl : LBRACK local-decls stmt-list LBRACK
+composed-decl : LBRACK local-decls stmt-list RBRACK
                   { YYSTYPE t = $2;
                     if (t != NULL) {
                       while (t->sibling != NULL)
@@ -186,11 +189,10 @@ rtn-decl    : RETURN SEMI
                   $$->lineno = lineno;
                 }
             ;
-exp         : var EQ exp 
+exp         : var ASSIGN exp 
               { $$ = newStmtNode(AssignK);
-                $$->attr.name = savedName;
-                $$->lineno = savedLineNo;
-                $$->child[0] = $3;
+                $$->child[0] = $1;
+                $$->child[1] = $3;
               }
             | simple_exp { $$ = $1; }
             ;
@@ -249,10 +251,13 @@ factor      : LPAREN exp RPAREN  { $$ = $2; }
                   $$->attr.val = savedNumber;
                 }
             ;
-act         : id LPAREN args RPAREN
+act         : id 
                 { $$ = newExpNode(CallK);
                   $$->attr.name = savedName;
-                  $$->child[0] = $3;
+                }
+              LPAREN args RPAREN
+                { $$ = $2;
+                  $$->child[0] = $4;
                 }
             ;
 args        : arg-list { $$ = $1; }
