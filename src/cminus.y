@@ -15,6 +15,7 @@
 #define YYSTYPE TreeNode *
 static char * savedName; /* for use in assignments */
 static int savedLineNo;  /* ditto */
+static int savedNumber;
 static TreeNode * savedTree; /* stores syntax tree for later return */
 static int yylex(void);
 int yyerror(char *);
@@ -46,7 +47,16 @@ decl-list   : decl-list decl
 decl        : var-decl { $$ = $1; }
             | fun-decl { $$ = $1; }
             ;
-var-decl    : type-specifier ID SEMI 
+id          : ID 
+                { savedName = copyString(tokenString);
+                  savedLineNo = lineno;
+                }
+            ;
+num         : NUM 
+                { savedNumber = atoi(tokenString);
+                  savedLineNo = lineno;
+                }
+var-decl    : type-specifier id SEMI 
                 { $$ = newDeclNode(VarK);
                   $$->attr.type = $1;
                   $$->lineno = lineno;
@@ -54,19 +64,19 @@ var-decl    : type-specifier ID SEMI
                   $$->child[0]->lineno = lineno;
                   $$->child[0]->attr.name = savedName;
                 }
-            | type-specifier ID LCOL NUM RCOL SEMI
+            | type-specifier id LCOL num RCOL SEMI
                 { $$ = newDeclNode(ArrVarK);
                   $$->attr.type = $1;
                   $$->lineno = lineno;
                   $$->child[0] = newExpNode(IdK);
-                  $$->child[0]->attr.arr = newArrAttr(savedName, atoi($4));
+                  $$->child[0]->attr.arr = newArrAttr(savedName, savedNumber);
                   $$->child[0]->lineno = lineno;
                 }
             ;
 type-specifier  : INT  { $$ = $1; }
                 | VOID { $$ = $1; }
                 ;
-fun-decl    : type-specifier ID LPAREN params RPAREN composed-decl
+fun-decl    : type-specifier id LPAREN params RPAREN composed-decl
                 { $$ = newDeclNode(FunK);
                   $$->attr.type = $1;
                   $$->lineno = lineno;
@@ -96,7 +106,7 @@ param-list  : param-list COMMA param
                 }
             | param { $$ = $1; }
             ;
-param       : type-specifier ID 
+param       : type-specifier id 
                 { $$ = newDeclNode(ParamK);
                   $$->attr.type = $1;
                   $$->lineno = lineno;
@@ -104,7 +114,7 @@ param       : type-specifier ID
                   $$->child[0]->attr.name = savedName;
                   $$->child[0]->lineno = lineno;
                 }
-            | type-specifier ID LCOL RCOL
+            | type-specifier id LCOL RCOL
                 { $$ = newDeclNode(ArrParamK);
                   $$->attr.type = $1;
                   $$->lineno = lineno;
