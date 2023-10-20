@@ -174,6 +174,7 @@ ArrAttr *newArrAttr(char *name, int size)
     a->size = size;
     a->type = INT;
   }
+  return a;
 }
 
 /* Function copyString allocates and makes a new
@@ -235,7 +236,7 @@ void printTree(TreeNode *tree)
         fprintf(listing, "Assign to: %s\n", tree->attr.name);
         break;
       case ReturnK:
-        fprintf(listing, "Return: %s\n");
+        fprintf(listing, "Return: \n");
         break;
       default:
         fprintf(listing, "Unknown ExpNode kind\n");

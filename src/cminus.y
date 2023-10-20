@@ -24,8 +24,8 @@ int yyerror(char *);
 
 %token IF ELSE VOID INT WHILE RETURN
 %token ID NUM 
-%token ASSIGN EQ LT LTE GT GTE DIF PLUS MINUS TIMES OVER LPAREN RPAREN SEMI COMMA LCOL RCOL LBRACK LBRACK
-%token ERROR 
+%token ASSIGN EQ LT LTE GT GTE DIF PLUS MINUS TIMES OVER LPAREN RPAREN SEMI COMMA LCOL RCOL LBRACK RBRACK
+%token ERROR
 
 %% /* Grammar for TINY */
 
@@ -60,20 +60,20 @@ num         : NUM
 var-decl    : type-specifier id SEMI 
                 { $$ = newDeclNode(VarK);
                   $$->attr.type = $1;
-                  $$->lineno = savedLineNoo;
+                  $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.name = savedName;
                 }
             | type-specifier id LCOL num RCOL SEMI
                 { $$ = newDeclNode(ArrVarK);
                   $$->attr.type = $1;
-                  $$->lineno = savedLineNoo;
+                  $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.arr = newArrAttr(savedName, savedNumber);
                 }
             ;
-type-specifier  : INT  { $$ = $1; }
-                | VOID { $$ = $1; }
+type-specifier  : INT  { $$ = INT; }
+                | VOID { $$ = VOID; }
                 ;
 fun-decl    : type-specifier id LPAREN params RPAREN composed-decl
                 { $$ = newDeclNode(FunK);
@@ -81,12 +81,8 @@ fun-decl    : type-specifier id LPAREN params RPAREN composed-decl
                   $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
                   $$->child[0]->attr.name = savedName;
-                  if (params == NULL)
-                    $$->child[0]->child[0] = $6;
-                  else {
-                    $$->child[0]->child[0] = $4;
-                    $$->child[0]->child[1] = $6;
-                  }
+                  $$->child[0]->child[0] = $4;
+                  $$->child[0]->child[1] = $6;
                 }
             ;
 params      : param-list  { $$ = $1; }
@@ -203,7 +199,7 @@ var         : id
                 $$->attr.name = savedName;
               }
             | id LCOL exp RCOL
-              { $$ = newExpNode(ArrIdK);
+              { $$ = newExpNode(IdK);
                 $$->attr.name = savedName;
                 $$->child[0] = $3;
               }
@@ -243,7 +239,7 @@ term        : term mult factor
             | factor { $$ = $1; }
             ;
 mult        : TIMES { $$ = TIMES; }
-            | OVER  { $$ = OVER }
+            | OVER  { $$ = OVER; }
             ;
 factor      : LPAREN exp RPAREN  { $$ = $2; }
             | var { $$ = $1; }

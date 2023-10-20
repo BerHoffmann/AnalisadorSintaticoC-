@@ -13,6 +13,20 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include "log.h"
+
+#ifndef YYPARSER
+
+/* the name of the following file may change */
+//#include "tiny.tab.h"
+#include "parser.h"
+
+/* ENDFILE is implicitly defined by Yacc/Bison,
+ * and not included in the tab.h file
+ */
+#define ENDFILE 0
+
+#endif
 
 #ifndef FALSE
 #define FALSE 0
@@ -25,42 +39,7 @@
 /* MAXRESERVED = the number of reserved words */
 #define MAXRESERVED 8
 
-typedef enum
-/* book-keeping tokens */
-{
-  ENDFILE,
-  ERROR,
-  /* reserved words */
-  IF,
-  ELSE,
-  INT,
-  RETURN,
-  VOID,
-  WHILE,
-  /* multicharacter tokens */
-  ID,
-  NUM,
-  /* special symbols */
-  PLUS,
-  MINUS,
-  TIMES,
-  OVER,
-  LT,
-  LTE,
-  GT,
-  GTE,
-  EQ,
-  DIF,
-  ASSIGN,
-  LPAREN,
-  RPAREN,
-  SEMI,
-  COMMA,
-  LCOL,
-  RCOL,
-  LBRACK,
-  RBRACK
-} TokenType;
+typedef int TokenType; 
 
 extern FILE *source;  /* source code text file */
 extern FILE *listing; /* listing output text file */
@@ -136,7 +115,7 @@ typedef struct treeNode
     TokenType type;
     int val;
     char *name;
-    ArrAttr arr;
+    ArrAttr *arr;
   } attr;
   ExpType type; /* for type checking of exps */
 } TreeNode;

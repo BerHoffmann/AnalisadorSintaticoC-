@@ -11,6 +11,13 @@
 /* lexeme of identifier or reserved word */
 char tokenString[MAXTOKENLEN+1];
 %}
+
+/* needed for newer versions of flex 
+   limitation: can not compile 2 source files at the same time (we do not need this) 
+*/
+%option noyywrap 
+
+
 digit       [0-9]
 number      {digit}+
 letter      [a-zA-Z]
@@ -59,35 +66,20 @@ whitespace  [ \t\r]+
 
 int lineit = 1;
 
-TokenType getToken(FILE * source2)
+TokenType getToken(void)
 { static int firstTime = TRUE;
   TokenType currentToken;
-
-  char * buffer = NULL;
-  size_t buffer_size = 0;
-
   if (firstTime)
   { firstTime = FALSE;
-    lineit = 1;
     lineno++;
     yyin = source;
     yyout = listing;
   }
-  
   currentToken = yylex();
   strncpy(tokenString,yytext,MAXTOKENLEN);
   if (TraceScan) {
-
-    while(lineit <= lineno){
-      fprintf(listing,"%d: ",lineit);
-      getline(&buffer, &buffer_size, source2);
-      fprintf(listing, "%s", buffer);
-      lineit++;
-    }
-
-    fprintf(listing,"\t%d: ",lineno);
+    pc("\t%d: ",lineno);
     printToken(currentToken,tokenString);
   }
-  
   return currentToken;
 }

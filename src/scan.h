@@ -1,6 +1,6 @@
 /****************************************************/
 /* File: scan.h                                     */
-/* The scanner interface for the C- compiler      */
+/* The scanner interface for the CMINUS compiler    */
 /****************************************************/
 
 #ifndef _SCAN_H_
@@ -15,6 +15,6 @@ extern char tokenString[MAXTOKENLEN+1];
 /* function getToken returns the 
  * next token in source file
  */
-TokenType getToken(FILE * source);
+TokenType getToken(void);
 
 #endif
