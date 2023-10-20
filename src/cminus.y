@@ -1,6 +1,6 @@
 /****************************************************/
-/* File: cminus.y                                     */
-/* The CMINUS Yacc/Bison specification file           */
+/* File: cminus.y                                   */
+/* The CMINUS Yacc/Bison specification file         */
 /* Compiler Construction: Principles and Practice   */
 /* Kenneth C. Louden                                */
 /****************************************************/
@@ -114,19 +114,27 @@ param       : type-specifier ID
                 }
             ;
 composed-decl : LBRACK local-decls stmt-list LBRACK
+                  { YYSTYPE t = $2;
+                    if (t != NULL) {
+                      while (t->sibling != NULL)
+                        t = t->sibling;
+                      t->sibling = $3;
+                      $$ = $2; 
+                    }
+                    else $$ = $3;
+                  }
               ;
 local-decls : local-decls var-decl
-              { YYSTYPE t = $1;
-                if (t != NULL) {
-                  while (t->sibling != NULL)
-                    t = t->sibling;
-                  t->sibling = $2;
-                  $$ = $1; 
+                { YYSTYPE t = $1;
+                  if (t != NULL) {
+                    while (t->sibling != NULL)
+                      t = t->sibling;
+                    t->sibling = $2;
+                    $$ = $1; 
+                  }
+                  else $$ = $2;
                 }
-                else $$ = $2;
-              }
-              
-            |
+            | { $$ = NULL; }
 stmt-list   : stmt-list stmt 
                 { YYSTYPE t = $1;
                   if (t != NULL) {
@@ -137,7 +145,7 @@ stmt-list   : stmt-list stmt
                   }
                   else $$ = $2;
                 }
-            | 
+            | { $$ = NULL; }
             ;
 stmt        : exp-decl      { $$ = $1; }
             | composed-decl { $$ = $1; }
@@ -146,7 +154,7 @@ stmt        : exp-decl      { $$ = $1; }
             | rtn-decl      { $$ = $1; }
             ;
 exp-decl    : exp SEMI { $$ = $1; }
-            | SEMI
+            | SEMI     { $$ = NULL; }
             ;
 select-decl : IF LPAREN exp RPAREN stmt 
                 { $$ = newStmtNode(IfK);
@@ -157,7 +165,7 @@ select-decl : IF LPAREN exp RPAREN stmt
                 { $$ = newStmtNode(IfK);
                   $$->child[0] = $3;
                   $$->child[1] = $5;
-                  $$->child[1] = $7;
+                  $$->child[2] = $7;
                 }
             ;
 iter-decl   : WHILE LPAREN exp RPAREN stmt
@@ -166,7 +174,15 @@ iter-decl   : WHILE LPAREN exp RPAREN stmt
                   $$->child[1] = $5;
                 }
             ;
-rtn-decl    : RETURN SEMI| RETURN exp SEMI
+rtn-decl    : RETURN SEMI 
+                { $$ = newStmtNode(ReturnK); 
+                  $$->lineno = lineno;
+                }
+            | RETURN exp SEMI
+                { $$ = newStmtNode(ReturnK); 
+                  $$->child[0] = $2;
+                  $$->lineno = lineno;
+                }
             ;
 exp         : var EQ exp 
               { $$ = newStmtNode(AssignK);
@@ -233,10 +249,18 @@ factor      : LPAREN exp RPAREN  { $$ = $2; }
                   $$->attr.val = atoi(tokenString);
                 }
             ;
-act         : ID LPAREN args RPAREN
+act         : ID 
+                { savedName = copyString(tokenString);
+                  savedLineNo = lineno; 
+                }
+              LPAREN args RPAREN
+                { $$ = $2;
+                  $$ = newExpNode(CallK);
+                  $$->child[0] = $4;
+                }
             ;
 args        : arg-list { $$ = $1; }
-            | 
+            | { $$ = NULL; }
             ;
 arg-list    : arg-list COMMA exp 
             | exp

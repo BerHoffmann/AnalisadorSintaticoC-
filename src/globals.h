@@ -25,22 +25,46 @@
 /* MAXRESERVED = the number of reserved words */
 #define MAXRESERVED 8
 
-typedef enum 
-    /* book-keeping tokens */
-   {ENDFILE,ERROR,
-    /* reserved words */
-    IF,ELSE,INT,RETURN,VOID,WHILE,
-    /* multicharacter tokens */
-    ID,NUM,
-    /* special symbols */
-    PLUS, MINUS, TIMES, OVER, LT, LTE, 
-    GT, GTE, EQ, DIF, ASSIGN, LPAREN, RPAREN,
-    SEMI, COMMA, LCOL, RCOL, LBRACK, RBRACK
-   } TokenType;
+typedef enum
+/* book-keeping tokens */
+{
+  ENDFILE,
+  ERROR,
+  /* reserved words */
+  IF,
+  ELSE,
+  INT,
+  RETURN,
+  VOID,
+  WHILE,
+  /* multicharacter tokens */
+  ID,
+  NUM,
+  /* special symbols */
+  PLUS,
+  MINUS,
+  TIMES,
+  OVER,
+  LT,
+  LTE,
+  GT,
+  GTE,
+  EQ,
+  DIF,
+  ASSIGN,
+  LPAREN,
+  RPAREN,
+  SEMI,
+  COMMA,
+  LCOL,
+  RCOL,
+  LBRACK,
+  RBRACK
+} TokenType;
 
-extern FILE* source; /* source code text file */
-extern FILE* listing; /* listing output text file */
-extern FILE* code; /* code text file for TM simulator */
+extern FILE *source;  /* source code text file */
+extern FILE *listing; /* listing output text file */
+extern FILE *code;    /* code text file for TM simulator */
 
 extern int lineno; /* source line number for listing */
 
@@ -48,35 +72,74 @@ extern int lineno; /* source line number for listing */
 /***********   Syntax tree for parsing ************/
 /**************************************************/
 
-typedef enum {StmtK,ExpK, DeclK} NodeKind;
-typedef enum {IfK,WhileK,AssignK,ReturnK} StmtKind;
-typedef enum {OpK,ConstK,IdK} ExpKind;
-typedef enum {VarK,FunK,ArrVarK,ArrParamK,ParamK} DeclKind;
+typedef enum
+{
+  StmtK,
+  ExpK,
+  DeclK
+} NodeKind;
+typedef enum
+{
+  IfK,
+  WhileK,
+  AssignK,
+  ReturnK
+} StmtKind;
+typedef enum
+{
+  OpK,
+  ConstK,
+  IdK,
+  CallK
+} ExpKind;
+typedef enum
+{
+  VarK,
+  FunK,
+  ArrVarK,
+  ArrParamK,
+  ParamK
+} DeclKind;
 
 /* ExpType is used for type checking */
-typedef enum {Void,Integer,Boolean} ExpType;
+typedef enum
+{
+  Void,
+  Integer,
+  Boolean
+} ExpType;
 
 #define MAXCHILDREN 3
 
-typedef struct ArrAttr {
+typedef struct ArrAttr
+{
   TokenType type;
-  char * name;
+  char *name;
   int size;
 } ArrAttr;
 
 typedef struct treeNode
-   { struct treeNode * child[MAXCHILDREN];
-     struct treeNode * sibling;
-     int lineno;
-     NodeKind nodekind;
-     union { StmtKind stmt; ExpKind exp; DeclKind decl;} kind;
-     union { TokenType op;
-             TokenType type;
-             int val;
-             char * name;
-             ArrAttr arr; } attr;
-     ExpType type; /* for type checking of exps */
-   } TreeNode;
+{
+  struct treeNode *child[MAXCHILDREN];
+  struct treeNode *sibling;
+  int lineno;
+  NodeKind nodekind;
+  union
+  {
+    StmtKind stmt;
+    ExpKind exp;
+    DeclKind decl;
+  } kind;
+  union
+  {
+    TokenType op;
+    TokenType type;
+    int val;
+    char *name;
+    ArrAttr arr;
+  } attr;
+  ExpType type; /* for type checking of exps */
+} TreeNode;
 
 /**************************************************/
 /***********   Flags for tracing       ************/
@@ -111,5 +174,5 @@ extern int TraceAnalyze;
 extern int TraceCode;
 
 /* Error = TRUE prevents further passes if an error occurs */
-extern int Error; 
+extern int Error;
 #endif
