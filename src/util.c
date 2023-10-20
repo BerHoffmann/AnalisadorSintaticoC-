@@ -20,13 +20,10 @@ void printToken(TokenType token, const char *tokenString)
   case ELSE:
   case WHILE:
   case RETURN:
+  case VOID:
+  case INT:
     fprintf(listing,
             "reserved word: %s\n", tokenString);
-  case VOID:
-    fprintf(listing, "void\n");
-    break;
-  case INT:
-    fprintf(listing, "int\n");
     break;
   case PLUS:
     fprintf(listing, "+\n");
@@ -167,20 +164,6 @@ TreeNode *newDeclNode(DeclKind kind)
   return t;
 }
 
-ArrAttr *newArrAttr(char *name, int size)
-{
-  ArrAttr *a = (ArrAttr *)malloc(sizeof(ArrAttr));
-  if (a == NULL)
-    fprintf(listing, "Out of memory error at line %d\n", lineno);
-  else
-  {
-    a->name = name;
-    a->size = size;
-    a->type = INT;
-  }
-  return a;
-}
-
 /* Function copyString allocates and makes a new
  * copy of an existing string
  */
@@ -237,10 +220,10 @@ void printTree(TreeNode *tree)
         fprintf(listing, "While\n");
         break;
       case AssignK:
-        fprintf(listing, "Assign to: %s\n", tree->attr.name);
+        fprintf(listing, "Assign:\n");
         break;
       case ReturnK:
-        fprintf(listing, "Return: \n");
+        fprintf(listing, "Return\n");
         break;
       default:
         fprintf(listing, "Unknown ExpNode kind\n");
@@ -279,7 +262,10 @@ void printTree(TreeNode *tree)
       case ArrParamK :
       case ParamK :
         fprintf(listing, "Type: ");
-        printToken(tree->attr.type, "\0");
+        if (tree->attr.type == INT)
+          fprintf(listing, "int\n");
+        if (tree->attr.type == VOID)
+          fprintf(listing, "void\n");
         break;
       default:
         fprintf(listing, "Unknown ExpNode kind\n");

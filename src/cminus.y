@@ -69,7 +69,9 @@ var-decl    : type-specifier id SEMI
                   $$->attr.type = $1;
                   $$->lineno = savedLineNo;
                   $$->child[0] = newExpNode(IdK);
-                  $$->child[0]->attr.arr = newArrAttr(savedName, savedNumber);
+                  $$->child[0]->attr.name = savedName;
+                  $$->child[0]->child[0] = newExpNode(ConstK);
+                  $$->child[0]->child[0]->attr.val = savedNumber;
                 }
             ;
 type-specifier  : INT  { $$ = INT; }

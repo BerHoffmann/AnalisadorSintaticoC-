@@ -24,7 +24,6 @@ TreeNode *newStmtNode(StmtKind);
 TreeNode *newExpNode(ExpKind);
 
 TreeNode *newDeclNode(DeclKind);
-ArrAttr *newArrAttr(char *, int);
 
 /* Function copyString allocates and makes a new
  * copy of an existing string
