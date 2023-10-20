@@ -216,12 +216,12 @@ simple_exp  : sum-exp relational sum-exp
               }
             | sum-exp { $$ = $1; }
             ;
-relational  : LTE { $$ = $1; }
-            | LT  { $$ = $1; }
-            | GT  { $$ = $1; }
-            | GTE { $$ = $1; }
-            | EQ  { $$ = $1; }
-            | DIF { $$ = $1; }
+relational  : LTE { $$ = LTE; }
+            | LT  { $$ = LT; }
+            | GT  { $$ = GT; }
+            | GTE { $$ = GTE; }
+            | EQ  { $$ = EQ; }
+            | DIF { $$ = DIF; }
             ;
 sum-exp     : sum-exp sum term 
               { $$ = newExpNode(OpK);
@@ -231,8 +231,8 @@ sum-exp     : sum-exp sum term
               }
             | term { $$ = $1; }
             ;
-sum         : PLUS  { $$ = $1; }
-            | MINUS { $$ = $1; }
+sum         : PLUS  { $$ = PLUS; }
+            | MINUS { $$ = MINUS; }
             ;
 term        : term mult factor
                 { $$ = newExpNode(OpK);
@@ -242,8 +242,8 @@ term        : term mult factor
                 }
             | factor { $$ = $1; }
             ;
-mult        : TIMES { $$ = $1; }
-            | OVER  { $$ = $1; }
+mult        : TIMES { $$ = TIMES; }
+            | OVER  { $$ = OVER }
             ;
 factor      : LPAREN exp RPAREN  { $$ = $2; }
             | var { $$ = $1; }
