@@ -202,13 +202,14 @@ exp         : var EQ exp
               }
             | simple_exp { $$ = $1; }
             ;
-var         : ID 
-              { savedName = copyString(tokenString);
-                savedLineNo = lineno;
+var         : id 
+              { $$ = newExpNode(IdK);
+                $$->attr.name = savedName;
               }
-            | ID LCOL exp RCOL
-              { savedName = copyString(tokenString);
-                savedLineNo = lineno;
+            | id LCOL exp RCOL
+              { $$ = newExpNode(IdK);
+                $$->attr.name = savedName;
+                $$->child[0] = $3;
               }
             ;
 simple_exp  : sum-exp relational sum-exp 
@@ -259,14 +260,10 @@ factor      : LPAREN exp RPAREN  { $$ = $2; }
                   $$->attr.val = atoi(tokenString);
                 }
             ;
-act         : ID 
-                { savedName = copyString(tokenString);
-                  savedLineNo = lineno; 
-                }
-              LPAREN args RPAREN
-                { $$ = $2;
-                  $$ = newExpNode(CallK);
-                  $$->child[0] = $4;
+act         : id LPAREN args RPAREN
+                { $$ = newExpNode(CallK);
+                  $$->attr.name = savedName;
+                  $$->child[0] = $3;
                 }
             ;
 args        : arg-list { $$ = $1; }
