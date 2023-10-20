@@ -266,8 +266,16 @@ args        : arg-list { $$ = $1; }
             | { $$ = NULL; }
             ;
 arg-list    : arg-list COMMA exp 
-            | exp
-              { $$ = $2; }
+                { YYSTYPE t = $1;
+                    if (t != NULL) {
+                      while (t->sibling != NULL)
+                        t = t->sibling;
+                      t->sibling = $3;
+                      $$ = $1; 
+                    }
+                    else $$ = $3;
+                  }
+            | exp { $$ = $1; }
             ;
 %%
 
